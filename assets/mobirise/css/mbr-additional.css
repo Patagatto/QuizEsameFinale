@@ -688,7 +688,7 @@ a {
   transition: outline 0.2s ease-in-out;
 }
 .cid-sFGzrhlvIh {
-  background-color: #232323;
+  background-image: url("../../../assets/images/mbr.jpg");
 }
 .cid-sFGzrhlvIh .icons-media-container {
   display: flex;
@@ -732,7 +732,7 @@ a {
   color: #ffffff;
 }
 .cid-sFGzrhlvIh H1 {
-  color: #c37a7a;
+  color: #ff9966;
 }
 .cid-sFGzrhlvIh .mbr-text,
 .cid-sFGzrhlvIh .mbr-section-btn {
