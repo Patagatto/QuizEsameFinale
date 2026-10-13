@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="Mobirise v6.1.12, mobirise.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <title>Simulazione Test - Pagina Quiz</title>
+    <link rel="shortcut icon" href="assets/images/logo-96x97.png" type="image/x-icon">
+    <title>Simulazione Esame - Test</title>
+
+    <!-- Stili CSS di Mobirise (gli stessi di index.html) -->
+    <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/parallax/jarallax.css">
+    <link rel="stylesheet" href="assets/dropdown/css/style.css">
+    <link rel="stylesheet" href="assets/socicon/css/styles.css">
     <link rel="stylesheet" href="assets/theme/css/style.css">
+    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
 </head>
 <body>
 
+    <!-- Navbar coerente con l'index -->
     <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
         <div class="card-wrap little-radius container-fluid">
             <div class="navbar-brand">
@@ -23,53 +33,44 @@
         </div>
     </nav>
 
-    <section data-bs-version="5.1" class="tabs01 tabs rebootm5 cid-vxQcBtGF2t" id="tabs01-1" style="padding-top: 120px;">
+    <!-- Sezione del Quiz con lo stile grafico delle card/header -->
+    <section class="header1 cid-v" id="header01-0" style="padding-top: 140px; min-height: 100vh;">
         <div class="mbr-overlay" style="opacity: 0.8; background-color: rgb(18, 18, 18);"></div>
-
-        <div class="container-fluid">
+        <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12">
+                <div class="col-12 col-lg-8 card">
                     <div class="content-wrapper text-center">
-                        <p class="mbr-label mbr-fonts-style display-7">Materia</p>
-                        <h2 id="questionText" class="mbr-section-title mbr-fonts-style text-center display-2 text-white">Caricamento domanda...</h2>
-                    </div>
-                </div>
+                        <p id="materiaTitle" class="mbr-label mbr-fonts-style display-7 text-warning mb-2">Simulazione Esame</p>
+                        <h2 id="questionText" class="mbr-section-title mbr-fonts-style display-5 text-white mb-4">Caricamento domande in corso...</h2>
 
-                <div class="col-12 tabs-wrapper mt-4">
-                    <ul class="nav nav-tabs justify-content-center" role="tablist" style="list-style: none; display: flex; gap: 15px;">
-                        <li class="nav-item">
-                            <button id="opt0" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                        <!-- Pulsanti delle risposte -->
+                        <div class="d-grid gap-3 my-4">
+                            <button id="opt0" class="btn btn-primary display-7 text-start p-3 w-100">
                                 <span class="option-text">Risposta 1</span>
                             </button>
-                        </li>
-                        <li class="nav-item">
-                            <button id="opt1" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                            <button id="opt1" class="btn btn-primary display-7 text-start p-3 w-100">
                                 <span class="option-text">Risposta 2</span>
                             </button>
-                        </li>
-                        <li class="nav-item">
-                            <button id="opt2" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                            <button id="opt2" class="btn btn-primary display-7 text-start p-3 w-100">
                                 <span class="option-text">Risposta 3</span>
                             </button>
-                        </li>
-                        <li class="nav-item">
-                            <button id="opt3" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                            <button id="opt3" class="btn btn-primary display-7 text-start p-3 w-100">
                                 <span class="option-text">Risposta 4</span>
                             </button>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
 
-                <div class="col-12 mt-5">
-                    <div class="d-flex justify-content-between px-5">
-                        <button id="prevBtn" class="btn btn-md btn-secondary display-7">Indietro</button>
-                        <button id="nextBtn" class="btn btn-md btn-warning display-7">Avanti</button>
+                        <!-- Pulsanti Indietro / Avanti -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button id="prevBtn" class="btn btn-secondary display-7">Indietro</button>
+                            <button id="nextBtn" class="btn btn-warning display-7">Avanti</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Script JavaScript per leggere il CSV, filtrare per materia e gestire il test -->
     <script>
 let questions = [];
 let currentIndex = 0;
@@ -78,26 +79,44 @@ let userAnswers = {};
 window.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch('Esame.csv');
-                if (!response.ok) throw new Error("Impossibile trovare il file Esame.csv");
+                if (!response.ok) throw new Error("File Esame.csv non trovato");
                 const data = await response.text();
-                parseCSV(data);
+
+                // Legge la materia passata nell'URL (es. page1.html?materia=Orientamento%20finanziario)
+                const urlParams = new URLSearchParams(window.location.search);
+                const selectedMateria = urlParams.get('materia');
+
+                if (selectedMateria) {
+                    document.getElementById('materiaTitle').innerText = "Materia: " + decodeURIComponent(selectedMateria);
+                } else {
+                    document.getElementById('materiaTitle').innerText = "Simulazione Completa";
+                }
+
+                parseCSV(data, selectedMateria);
                 loadQuestion(currentIndex);
             } catch (error) {
-                document.getElementById('questionText').innerText = "Errore nel caricamento delle domande. Assicurati che Esame.csv sia nella cartella.";
+                document.getElementById('questionText').innerText = "Errore nel caricamento delle domande dal file CSV.";
                 console.error(error);
             }
 });
 
-function parseCSV(text) {
+function parseCSV(text, filterMateria) {
             const lines = text.split('\n');
             questions = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
+                const line = lines.label || lines[i].trim();
                 if (!line) continue;
 
-                const cols = line.split(';'); // Usa ';' se il CSV usa il punto e virgola
-                if (cols.length >= 6) {
+                const cols = line.split(';'); // Separatore punto e virgola
+                if (cols.length >= 7) {
+                    const materiaCol = cols[6].trim().replace(/^"|"$/g, '');
+
+                    // Filtra per materia se specificata nell'URL
+                    if (filterMateria && materiaCol.toLowerCase() !== decodeURIComponent(filterMateria).toLowerCase()) {
+                        continue;
+                    }
+
                     questions.push({
                         id: questions.length + 1,
                         question: cols[0].trim().replace(/^"|"$/g, ''),
@@ -107,11 +126,20 @@ function parseCSV(text) {
                             cols[3].trim().replace(/^"|"$/g, ''),
                             cols[4].trim().replace(/^"|"$/g, '')
                         ],
-                        solution: cols[5].trim().replace(/^"|"$/g, '')
+                        solution: cols[5].trim().replace(/^"|"$/g, ''),
+                        materia: materiaCol
                     });
                 }
             }
 
+            if (questions.length === 0) {
+                document.getElementById('questionText').innerText = filterMateria
+                    ? `Nessuna domanda trovata per la materia: ${filterMateria}`
+                    : "Nessuna domanda trovata nel file CSV.";
+                return;
+            }
+
+            // Mescola e prende massimo 30 domande
             questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
 }
 
@@ -185,19 +213,22 @@ function showResults() {
                 }
             });
 
-            const container = document.querySelector('.container-fluid');
+            const container = document.querySelector('.content-wrapper');
             container.innerHTML = `
-                <div class="text-center text-white py-5">
-                    <h2 class="display-2">Test Completato!</h2>
-                    <p class="display-7 mt-3">Punteggio: <b>${correct} / ${questions.length}</b></p>
-                    <h3 class="display-5 mt-5">Riepilogo Errori:</h3>
-                    <div class="text-start mx-auto mt-3" style="max-width: 600px; max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 8px;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
-                </div>
+                <h2 class="mbr-section-title mbr-fonts-style display-2 text-white">Test Completato!</h2>
+                <p class="mbr-text mbr-fonts-style display-7 text-white mt-3">Punteggio: <b>${correct} / ${questions.length}</b></p>
+                <h3 class="mbr-fonts-style display-5 text-warning mt-4">Riepilogo Errori:</h3>
+                <div class="text-start text-white mt-3" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
             `;
 }
     </script>
 
+    <!-- Script di Mobirise -->
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/parallax/jarallax.js"></script>
+    <script src="assets/smoothscroll/smooth-scroll.js"></script>
+    <script src="assets/ytplayer/index.js"></script>
+    <script src="assets/dropdown/js/navbar-dropdown.js"></script>
     <script src="assets/theme/js/script.js"></script>
 </body>
 </html>
