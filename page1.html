@@ -38,11 +38,27 @@
             padding: 15px 20px !important;
             transition: all 0.2s ease-in-out;
         }
+        /* Stile per le box del riepilogo errori/risposte */
+        .result-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #ccc;
+        }
+
+            .result-box.correct {
+                border-color: #28a745 !important; /* Contorno verde */
+            }
+
+            .result-box.wrong {
+                border-color: #dc3545 !important; /* Contorno rosso */
+            }
     </style>
 </head>
 <body>
 
-    <!-- Navbar con la scritta "Rossellini" trasformata in link per la Home -->
+    <!-- Navbar con la scritta "Rossellini" collegata alla Home -->
     <section data-bs-version="5.1" class="menu menu1 rebootm5 cid-vxPWGiSXVj" once="menu" id="menu-1-vxPWGiSXVj">
         <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
             <div class="card-wrap little-radius container-fluid">
@@ -52,7 +68,6 @@
                             <img src="assets/images/mbr-96x82.png" alt="Mobirise Website Builder" style="height: 3rem;">
                         </a>
                     </span>
-                    <!-- Scritta Rossellini cliccabile che porta a index.html -->
                     <span class="navbar-caption-wrap">
                         <a class="navbar-caption display-4" href="index.html">Rossellini</a>
                     </span>
@@ -69,7 +84,9 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
                     <div class="quiz-container text-white">
-                        <p id="materiaLabel" class="mbr-label mbr-fonts-style display-7 text-warning mb-2 text-center">Caricamento materia...</p>
+                        <p id="materiaLabel" class="mbr-label mbr-fonts-style display-7 text-warning mb-1 text-center">Caricamento materia...</p>
+                        <!-- Scritta piccola per il numero di riga nel CSV -->
+                        <p id="rowLabel" class="mbr-fonts-style display-7 text-muted mb-3 text-center" style="font-size: 0.85rem;"></p>
 
                         <h2 id="questionText" class="mbr-section-title mbr-fonts-style display-5 text-center mb-4" style="min-height: 80px;">Caricamento domanda in corso...</h2>
 
@@ -98,7 +115,7 @@
         </div>
     </section>
 
-    <!-- Script JavaScript per gestire il quiz, i filtri e il cambio in "Fine" sull'ultima domanda -->
+    <!-- Script JavaScript aggiornato -->
     <script>
 let questions = [];
 let currentIndex = 0;
@@ -131,6 +148,8 @@ function parseCSV(text, filterMateria) {
             const lines = text.split('\n');
             questions = [];
 
+            // Partiamo da i = 1 per saltare l'intestazione.
+            // Registriamo l'indice di riga reale nel file CSV (i + 1 considerando che la riga 1 è l'intestazione).
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
@@ -145,6 +164,7 @@ function parseCSV(text, filterMateria) {
 
                     questions.push({
                         id: questions.length + 1,
+                        csvRow: i + 1, // Memorizza il numero di riga effettivo nel file CSV
                         question: cols[0].trim().replace(/^"|"$/g, ''),
                         options: [
                             cols[1].trim().replace(/^"|"$/g, ''),
@@ -179,7 +199,10 @@ function loadQuestion(index) {
             const q = questions[index];
             document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
 
-            // Gestione del bottone Avanti / Fine sull'ultima domanda
+            // Mostra il numero di riga del file CSV
+            document.getElementById('rowLabel').innerText = `Riga ${q.csvRow}`;
+
+            // Gestione pulsante Avanti / Fine sull'ultima domanda
             const nextBtn = document.getElementById('nextBtn');
             if (index === questions.length - 1) {
                 nextBtn.innerText = "Fine";
@@ -239,23 +262,35 @@ document.getElementById('prevBtn').addEventListener('click', (e) => {
 
 function showResults() {
             let correct = 0;
-            let mistakesHTML = "";
+            let resultsHTML = "";
 
             questions.forEach(q => {
                 const userAns = userAnswers[q.id];
-                if (userAns && userAns.toLowerCase() === q.solution.toLowerCase()) {
+                const isCorrect = userAns && userAns.toLowerCase() === q.solution.toLowerCase();
+
+                if (isCorrect) {
                     correct++;
-                } else {
-                    mistakesHTML += `<p><b>Domanda:</b> ${q.question}<br><b>Tua risposta:</b> ${userAns || 'Nessuna'}<br><b>Risposta corretta:</b> ${q.solution}</p><hr>`;
                 }
+
+                // Crea una box indipendente per ogni domanda con classe correct (verde) o wrong (rosso)
+                const boxClass = isCorrect ? "result-box correct" : "result-box wrong";
+
+                resultsHTML += `
+                    <div class="${boxClass}">
+                        <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">Riga ${q.csvRow} - Materia: ${q.materia}</p>
+                        <p><b>Domanda:</b> ${q.question}</p>
+                        <p><b>Tua risposta:</b> ${userAns || 'Nessuna'}</p>
+                        <p><b>Risposta corretta:</b> ${q.solution}</p>
+                    </div>
+                `;
             });
 
             const container = document.querySelector('.quiz-container');
             container.innerHTML = `
                 <h2 class="mbr-section-title mbr-fonts-style display-2 text-center text-white">Test Completato!</h2>
                 <p class="mbr-text mbr-fonts-style display-7 text-center text-white mt-3">Punteggio finale: <b>${correct} / ${questions.length}</b></p>
-                <h3 class="mbr-fonts-style display-5 text-warning mt-4 text-center">Riepilogo Errori:</h3>
-                <div class="text-start text-white mt-3 p-3" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.5); border-radius: 8px;">${mistakesHTML || '<p class="text-center">Complimenti, nessun errore!</p>'}</div>
+                <h3 class="mbr-fonts-style display-5 text-warning mt-4 text-center">Riepilogo Risposte:</h3>
+                <div class="text-start text-white mt-3 p-3" style="max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.5); border-radius: 8px;">${resultsHTML}</div>
                 <div class="text-center mt-4">
                     <a href="index.html" class="btn btn-warning display-7">Torna alla Home</a>
                 </div>
