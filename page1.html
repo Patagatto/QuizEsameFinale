@@ -1,68 +1,101 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
+    <!-- Site made with Mobirise Website Builder v6.1.12, https://mobirise.com -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="generator" content="Mobirise v6.1.12, mobirise.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/logo-96x97.png" type="image/x-icon">
-    <title>Simulazione Esame - Test</title>
+    <link rel="shortcut icon" href="assets/images/mbr-96x82.png" type="image/x-icon">
+    <meta name="description" content="Simulazione Esame ITS Rossellini 2026 - Svolgimento Test">
 
-    <!-- Stili CSS di Mobirise (gli stessi di index.html) -->
+    <title>Simulazione Esame ITS Rossellini 2026 - Test in Corso</title>
+
+    <!-- Fogli di stile CSS originali del tema -->
     <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/parallax/jarallax.css">
     <link rel="stylesheet" href="assets/dropdown/css/style.css">
-    <link rel="stylesheet" href="assets/socicon/css/styles.css">
     <link rel="stylesheet" href="assets/theme/css/style.css">
-    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Liter&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Liter&display=swap"></noscript>
+    <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=KRYIAj">
+    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=KRYIAj" type="text/css">
+
+    <style>
+        /* Stile personalizzato per mantenere la coerenza visiva e centrare il box del quiz */
+        .quiz-container {
+            background: rgba(18, 18, 18, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .option-btn {
+            text-align: left !important;
+            white-space: normal !important;
+            word-break: break-word;
+            padding: 15px 20px !important;
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Navbar coerente con l'index -->
-    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
-        <div class="card-wrap little-radius container-fluid">
-            <div class="navbar-brand">
-                <span class="navbar-logo">
-                    <a href="index.html">
-                        <img src="assets/images/mbr-96x82.png" alt="Logo" style="height: 3rem;">
-                    </a>
-                </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption display-4" href="index.html">Rossellini</a></span>
+    <!-- Navbar coerente con la Home -->
+    <section data-bs-version="5.1" class="menu menu1 rebootm5 cid-vxPWGiSXVj" once="menu" id="menu-1-vxPWGiSXVj">
+        <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+            <div class="card-wrap little-radius container-fluid">
+                <div class="navbar-brand">
+                    <span class="navbar-logo">
+                        <a href="index.html">
+                            <img src="assets/images/mbr-96x82.png" alt="Mobirise Website Builder" style="height: 3rem;">
+                        </a>
+                    </span>
+                    <span class="navbar-caption-wrap"><a class="navbar-caption display-4" href="index.html">Rossellini</a></span>
+                </div>
+                <div class="navbar-buttons mbr-section-btn">
+                    <a class="btn btn-warning display-7" href="index.html">Torna alla Home</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </section>
 
-    <!-- Sezione del Quiz con lo stile grafico delle card/header -->
-    <section class="header1 cid-v" id="header01-0" style="padding-top: 140px; min-height: 100vh;">
-        <div class="mbr-overlay" style="opacity: 0.8; background-color: rgb(18, 18, 18);"></div>
+    <!-- Sezione principale con lo stesso sfondo fullscreen e overlay della home -->
+    <section data-bs-version="5.1" class="header02 rebootm5 cid-vxPWGiV9go mbr-fullscreen mbr-parallax-background" id="hero-2-vxPWGiV9go" style="padding-top: 100px;">
+        <div class="mbr-overlay" style="opacity: 0.6; background-color: rgb(18, 18, 18);"></div>
+
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-lg-8 card">
-                    <div class="content-wrapper text-center">
-                        <p id="materiaTitle" class="mbr-label mbr-fonts-style display-7 text-warning mb-2">Simulazione Esame</p>
-                        <h2 id="questionText" class="mbr-section-title mbr-fonts-style display-5 text-white mb-4">Caricamento domande in corso...</h2>
+                <div class="col-12 col-lg-8">
+                    <div class="quiz-container text-white">
+                        <!-- Titolo Materia Dinamico -->
+                        <p id="materiaLabel" class="mbr-label mbr-fonts-style display-7 text-warning mb-2 text-center">Caricamento materia...</p>
 
-                        <!-- Pulsanti delle risposte -->
+                        <!-- Testo della Domanda -->
+                        <h2 id="questionText" class="mbr-section-title mbr-fonts-style display-5 text-center mb-4" style="min-height: 80px;">Caricamento domanda in corso...</h2>
+
+                        <!-- Bottoni delle Risposte -->
                         <div class="d-grid gap-3 my-4">
-                            <button id="opt0" class="btn btn-primary display-7 text-start p-3 w-100">
+                            <button id="opt0" class="btn btn-primary display-7 option-btn w-100">
                                 <span class="option-text">Risposta 1</span>
                             </button>
-                            <button id="opt1" class="btn btn-primary display-7 text-start p-3 w-100">
+                            <button id="opt1" class="btn btn-primary display-7 option-btn w-100">
                                 <span class="option-text">Risposta 2</span>
                             </button>
-                            <button id="opt2" class="btn btn-primary display-7 text-start p-3 w-100">
+                            <button id="opt2" class="btn btn-primary display-7 option-btn w-100">
                                 <span class="option-text">Risposta 3</span>
                             </button>
-                            <button id="opt3" class="btn btn-primary display-7 text-start p-3 w-100">
+                            <button id="opt3" class="btn btn-primary display-7 option-btn w-100">
                                 <span class="option-text">Risposta 4</span>
                             </button>
                         </div>
 
-                        <!-- Pulsanti Indietro / Avanti -->
+                        <!-- Pulsanti di Navigazione (Indietro / Avanti) -->
                         <div class="d-flex justify-content-between mt-4">
-                            <button id="prevBtn" class="btn btn-secondary display-7">Indietro</button>
-                            <button id="nextBtn" class="btn btn-warning display-7">Avanti</button>
+                            <button id="prevBtn" class="btn btn-secondary display-7 px-4">Indietro</button>
+                            <button id="nextBtn" class="btn btn-warning display-7 px-4">Avanti</button>
                         </div>
                     </div>
                 </div>
@@ -70,7 +103,7 @@
         </div>
     </section>
 
-    <!-- Script JavaScript per leggere il CSV, filtrare per materia e gestire il test -->
+    <!-- Script JavaScript integrato per il quiz e il filtro per materia -->
     <script>
 let questions = [];
 let currentIndex = 0;
@@ -87,9 +120,9 @@ window.addEventListener('DOMContentLoaded', async () => {
                 const selectedMateria = urlParams.get('materia');
 
                 if (selectedMateria) {
-                    document.getElementById('materiaTitle').innerText = "Materia: " + decodeURIComponent(selectedMateria);
+                    document.getElementById('materiaLabel').innerText = "Materia: " + decodeURIComponent(selectedMateria);
                 } else {
-                    document.getElementById('materiaTitle').innerText = "Simulazione Completa";
+                    document.getElementById('materiaLabel').innerText = "Simulazione Esame Completa";
                 }
 
                 parseCSV(data, selectedMateria);
@@ -105,14 +138,14 @@ function parseCSV(text, filterMateria) {
             questions = [];
 
             for (let i = 1; i < lines.length; i++) {
-                const line = lines.label || lines[i].trim();
+                const line = lines[i].trim();
                 if (!line) continue;
 
-                const cols = line.split(';'); // Separatore punto e virgola
+                const cols = line.split(';'); // Usa il punto e virgola come separatore
                 if (cols.length >= 7) {
                     const materiaCol = cols[6].trim().replace(/^"|"$/g, '');
 
-                    // Filtra per materia se specificata nell'URL
+                    // Se è specificata una materia, filtra per quella (colonna G)
                     if (filterMateria && materiaCol.toLowerCase() !== decodeURIComponent(filterMateria).toLowerCase()) {
                         continue;
                     }
@@ -139,51 +172,63 @@ function parseCSV(text, filterMateria) {
                 return;
             }
 
-            // Mescola e prende massimo 30 domande
+            // Mescola le domande e ne prende massimo 30
             questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
 }
 
 function loadQuestion(index) {
-            if (questions.length === 0) return;
+    if (questions.length === 0) return;
 
-            if (index >= questions.length) {
-                showResults();
-                return;
+    if (index >= questions.length) {
+        showResults();
+        return;
+    }
+
+    const q = questions[index];
+    document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
+
+    // Controlla se siamo arrivati all'ultima domanda
+    const nextBtn = document.getElementById('nextBtn');
+    if (index === questions.length - 1) {
+        nextBtn.innerText = "Fine";
+        nextBtn.classList.remove('btn-warning');
+        nextBtn.classList.add('btn-success'); // Diventa verde per indicare la conclusione (opzionale ma carino)
+    } else {
+        nextBtn.innerText = "Avanti";
+        nextBtn.classList.remove('btn-success');
+        nextBtn.classList.add('btn-warning');
+    }
+
+    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+    for (let i = 0; i < 4; i++) {
+        const optBtn = document.getElementById(`opt0`, `opt1`, `opt2`, `opt3`)[i] || document.getElementById(`opt${i}`);
+        if (optBtn) {
+            const spanText = optBtn.querySelector('.option-text');
+            if (spanText) {
+                spanText.innerText = shuffledOptions[i];
             }
 
-            const q = questions[index];
-            document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
+            optBtn.classList.remove('btn-warning');
+            optBtn.classList.add('btn-primary');
 
-            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+            if (userAnswers[q.id] === shuffledOptions[i]) {
+                optBtn.classList.remove('btn-primary');
+                optBtn.classList.add('btn-warning');
+            }
 
-            for (let i = 0; i < 4; i++) {
-                const optBtn = document.getElementById(`opt${i}`);
-                if (optBtn) {
-                    const spanText = optBtn.querySelector('.option-text');
-                    if (spanText) {
-                        spanText.innerText = shuffledOptions[i];
-                    }
-
-                    optBtn.classList.remove('btn-warning');
-                    optBtn.classList.add('btn-primary');
-
-                    if (userAnswers[q.id] === shuffledOptions[i]) {
-                        optBtn.classList.remove('btn-primary');
-                        optBtn.classList.add('btn-warning');
-                    }
-
-                    optBtn.onclick = (e) => {
-                        e.preventDefault();
-                        userAnswers[q.id] = shuffledOptions[i];
-                        for (let j = 0; j < 4; j++) {
-                            document.getElementById(`opt${j}`).classList.remove('btn-warning');
-                            document.getElementById(`opt${j}`).classList.add('btn-primary');
-                        }
-                        optBtn.classList.remove('btn-primary');
-                        optBtn.classList.add('btn-warning');
-                    };
+            optBtn.onclick = (e) => {
+                e.preventDefault();
+                userAnswers[q.id] = shuffledOptions[i];
+                for (let j = 0; j < 4; j++) {
+                    document.getElementById(`opt${j}`).classList.remove('btn-warning');
+                    document.getElementById(`opt${j}`).classList.add('btn-primary');
                 }
-            }
+                optBtn.classList.remove('btn-primary');
+                optBtn.classList.add('btn-warning');
+            };
+        }
+    }
 }
 
 document.getElementById('nextBtn').addEventListener('click', (e) => {
@@ -213,17 +258,20 @@ function showResults() {
                 }
             });
 
-            const container = document.querySelector('.content-wrapper');
+            const container = document.querySelector('.quiz-container');
             container.innerHTML = `
-                <h2 class="mbr-section-title mbr-fonts-style display-2 text-white">Test Completato!</h2>
-                <p class="mbr-text mbr-fonts-style display-7 text-white mt-3">Punteggio: <b>${correct} / ${questions.length}</b></p>
-                <h3 class="mbr-fonts-style display-5 text-warning mt-4">Riepilogo Errori:</h3>
-                <div class="text-start text-white mt-3" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
+                <h2 class="mbr-section-title mbr-fonts-style display-2 text-center text-white">Test Completato!</h2>
+                <p class="mbr-text mbr-fonts-style display-7 text-center text-white mt-3">Punteggio finale: <b>${correct} / ${questions.length}</b></p>
+                <h3 class="mbr-fonts-style display-5 text-warning mt-4 text-center">Riepilogo Errori:</h3>
+                <div class="text-start text-white mt-3 p-3" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.5); border-radius: 8px;">${mistakesHTML || '<p class="text-center">Complimenti, nessun errore!</p>'}</div>
+                <div class="text-center mt-4">
+                    <a href="index.html" class="btn btn-warning display-7">Torna alla Home</a>
+                </div>
             `;
 }
     </script>
 
-    <!-- Script di Mobirise -->
+    <!-- Script di supporto Mobirise -->
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/parallax/jarallax.js"></script>
     <script src="assets/smoothscroll/smooth-scroll.js"></script>
