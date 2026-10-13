@@ -1,8 +1,9 @@
-﻿// File: Controllers/ExamController.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Hosting;
 
 namespace QuizEsameFinale.Controllers
 {

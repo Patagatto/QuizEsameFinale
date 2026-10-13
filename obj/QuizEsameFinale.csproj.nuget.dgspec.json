@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\urban\\Documents\\Stage\\EsameFinale\\QuizEsameFinale\\QuizEsameFinale\\QuizEsameFinale.csproj": {}
+    "C:\\Users\\urban\\Documents\\GitHub\\patagatto.github.io\\QuizEsameFinale.csproj": {}
   },
   "projects": {
-    "C:\\Users\\urban\\Documents\\Stage\\EsameFinale\\QuizEsameFinale\\QuizEsameFinale\\QuizEsameFinale.csproj": {
+    "C:\\Users\\urban\\Documents\\GitHub\\patagatto.github.io\\QuizEsameFinale.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\urban\\Documents\\Stage\\EsameFinale\\QuizEsameFinale\\QuizEsameFinale\\QuizEsameFinale.csproj",
+        "projectUniqueName": "C:\\Users\\urban\\Documents\\GitHub\\patagatto.github.io\\QuizEsameFinale.csproj",
         "projectName": "QuizEsameFinale",
-        "projectPath": "C:\\Users\\urban\\Documents\\Stage\\EsameFinale\\QuizEsameFinale\\QuizEsameFinale\\QuizEsameFinale.csproj",
+        "projectPath": "C:\\Users\\urban\\Documents\\GitHub\\patagatto.github.io\\QuizEsameFinale.csproj",
         "packagesPath": "C:\\Users\\urban\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\urban\\Documents\\Stage\\EsameFinale\\QuizEsameFinale\\QuizEsameFinale\\obj\\",
+        "outputPath": "C:\\Users\\urban\\Documents\\GitHub\\patagatto.github.io\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

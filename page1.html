@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v6.1.12, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v6.1.12, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/mbr-96x82.png" type="image/x-icon">
+  <meta name="description" content="">
+  
+  
+  <title>Page 1</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Liter&display=swap&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Liter&display=swap&display=swap"></noscript>
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=g0Sr0U"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=g0Sr0U" type="text/css">
+
+  
+  
+  
+</head>
+<body>
+  
+  <section data-bs-version="5.1" class="menu menu1 rebootm5 cid-vxPWGiSXVj" once="menu" id="menu-1-vxPWGiSXVj">
+	
+
+	<nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+		<div class="card-wrap little-radius container-fluid">
+			<div class="navbar-brand">
+				<span class="navbar-logo">
+					<a href="https://mobiri.se">
+						<img src="assets/images/mbr-96x82.png" alt="Mobirise Website Builder" style="height: 3rem;">
+					</a>
+				</span>
+				<span class="navbar-caption-wrap"><a class="navbar-caption display-4" href="https://mobiri.se">Rossellini</a></span>
+			</div>
+			
+			
+		</div>
+	</nav>
+</section>
+
+<section data-bs-version="5.1" class="tabs01 tabs rebootm5 cid-vxQcBtGF2t" id="tabs01-1">
+    
+
+    
+    <div class="mbr-overlay" style="opacity: 0.8; background-color: rgb(18, 18, 18);"></div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="content-wrapper">
+                    <p class="mbr-label mbr-fonts-style display-7">Materia</p>
+                    <h2 id="questionText" class="mbr-section-title mbr-fonts-style text-center display-2">Caricamento domanda...</h2>
+                </div>
+            </div>
+                    <div class="col-12 tabs-wrapper">
+                <ul class="nav nav-tabs justify-content-center" role="tablist">
+                    <li class="nav-item first mbr-fonts-style mbr-section-btn"><a id="opt0" class="btn nav-link show mbr-fonts-style btn-primary display-7" role="tab" href="#tabs01-1_tab0" aria-selected="true">
+                            <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span>
+                            <span class="option-text">Risposta 1</span></a></li>
+                    <li class="nav-item mbr-section-btn"><a id="opt1" class="btn btn-primary nav-link mbr-fonts-style display-7" role="tab" href="#tabs01-1_tab1" aria-selected="false">
+                            <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span>
+                            <span class="option-text">Risposta 2</span></a></li>
+                    <li class="nav-item mbr-section-btn"><a id="opt2" class="btn btn-primary nav-link mbr-fonts-style display-7" role="tab" href="#tabs01-1_tab2" aria-selected="false">
+                            <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span>
+                            <span class="option-text">Risposta 3</span></a></li>
+                    <li class="nav-item mbr-section-btn"><a id="opt3" class="btn btn-primary nav-link mbr-fonts-style display-7" role="tab" href="#tabs01-1_tab3" aria-selected="false">
+                            <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span>
+                            <span class="option-text">Risposta 4</span></a></li>
+                </ul>
+            </div>
+            <div class="col-12">
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane in active" role="tabpanel">
+                    </div>
+                    <div id="tab2" class="tab-pane" role="tabpanel">
+                    </div>
+                    <div id="tab3" class="tab-pane" role="tabpanel">
+                    </div>
+                    <div id="tab4" class="tab-pane" role="tabpanel">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <div class="d-flex justify-content-between">
+                    <div class="mbr-section-btn">
+                        <a class="btn btn-md btn-primary display-7" href="#">Indietro</a>
+                    </div>
+                    <div class="mbr-section-btn">
+                        <a class="btn btn-md btn-primary display-7" href="#">Avanti</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/smoothscroll/smooth-scroll.js"></script>
+  <script src="assets/ytplayer/index.js"></script>
+  <script src="assets/dropdown/js/navbar-dropdown.js"></script>
+  <script src="assets/mbr-tabs/mbr-tabs.js"></script>
+  <script src="assets/theme/js/script.js"></script>
+  <script>
+    async function loadQuestion() {
+      const questionEl = document.getElementById('questionText');
+      try {
+        const resp = await fetch('/api/exam/questions');
+        if (!resp.ok) {
+          throw new Error('Fetch error ' + resp.status);
+        }
+
+        const data = await resp.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          if (questionEl) questionEl.textContent = 'Nessuna domanda disponibile.';
+          return;
+        }
+
+        const q = data[0] || {};
+        if (questionEl) questionEl.textContent = q.question || 'Domanda mancante';
+
+        for (let i = 0; i < 4; i++) {
+          const optEl = document.getElementById('opt' + i);
+          if (!optEl) continue;
+
+          const txt = Array.isArray(q.options) && q.options[i] ? q.options[i] : '';
+          const span = optEl.querySelector('.option-text');
+          if (span) span.textContent = txt || ('Risposta ' + (i + 1));
+          optEl.setAttribute('data-value', txt);
+        }
+      } catch (err) {
+        console.error(err);
+        if (questionEl) questionEl.textContent = 'Errore caricamento domanda.';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadQuestion);
+  </script>
+  
+  
+  
+</body>
+</html>

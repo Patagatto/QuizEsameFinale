@@ -1,4 +1,3 @@
-// File: Program.cs
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,10 +14,22 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 // 1. Add services for API controllers (needed for ExamController)
 builder.Services.AddControllers();
 
+// ---> NEW: Add CORS policy so your HTML can fetch from this API
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 // 2. Native OpenAPI configuration for .NET
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+// ---> NEW: Enable CORS
+app.UseCors();
 
 // Configure the HTTP request processing pipeline
 if (app.Environment.IsDevelopment())
@@ -27,17 +38,20 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-// Enforce HTTPS redirection for secure communication
-app.UseHttpsRedirection();
+// ---> FIXED: Commented out HTTPS redirection to stop the warning!
+// app.UseHttpsRedirection();
 
-// 3. Automatically search and serve default files like index.html when accessing the root path (/)
-app.UseDefaultFiles();
+// 3. Serve default files (index.html) from project root so index.html can remain at repository root
+var rootFileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    FileProvider = rootFileProvider
+});
 
-// 4. Explicitly map static files to the physical 'wwwroot' folder (ensures index.html and test.html are served)
+// 4. Serve static files from the project root
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+    FileProvider = rootFileProvider,
     RequestPath = ""
 });
 
