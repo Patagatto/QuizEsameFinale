@@ -58,7 +58,7 @@
                     
                     <h2 class="mbr-section-title mbr-fonts-style display-1">Simulazione Esame ITS 2026</h2>
                     <p class="mbr-text mbr-fonts-style display-7">Preparati in modo assoluto all'esame ufficiale! Fai la prova e scopri dove brillano le tue abilità e dove puoi migliorare.</p>
-                    <div class="mbr-section-btn"><a id="startTestBtn" class="btn btn-warning display-7" href="page1.html" data-target="page1.html">
+                    <div class="mbr-section-btn"><a class="btn btn-warning display-7" href="page1.html">
                             <span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span>
                             Inizia Test
                         </a></div>
@@ -358,32 +358,7 @@
   <script src="assets/ytplayer/index.js"></script>
   <script src="assets/dropdown/js/navbar-dropdown.js"></script>
   <script src="assets/theme/js/script.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  const btn = document.getElementById('startTestBtn');
-  if(!btn) return;
-  btn.addEventListener('click', async function(e){
-    e.preventDefault();
-    const target = btn.getAttribute('data-target') || 'page1.html';
-    try{
-      btn.classList.add('disabled');
-      const orig = btn.textContent;
-      btn.textContent = 'Caricamento...';
-      const resp = await fetch('/api/exam/questions');
-      if(!resp.ok) throw new Error('Fetch error ' + resp.status);
-      // consume body to ensure server processed and stored session
-      await resp.json();
-      // navigate to page1.html
-      window.location.href = target;
-    }catch(err){
-      console.error(err);
-      alert('Errore caricamento domande. Assicurati che il server sia avviato.');
-      btn.classList.remove('disabled');
-      btn.textContent = 'Inizia Test';
-    }
-  });
-});
-</script>
+<!-- Il pulsante Inizia Test ora naviga direttamente a page1.html senza chiamare l'API -->
   
   
   

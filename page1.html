@@ -142,7 +142,140 @@
 
     document.addEventListener('DOMContentLoaded', loadQuestion);
   </script>
-  
+  <script>
+let questions = [];
+let currentIndex = 0;
+let userAnswers = {};
+
+// Carica il file CSV all'apertura della pagina
+window.addEventListener('DOMContentLoaded', async () => {
+          try {
+              const response = await fetch('Esame.csv');
+              const data = await response.text();
+              parseCSV(data);
+              loadQuestion(currentIndex);
+          } catch (error) {
+              document.getElementById('questionText').innerText = "Errore nel caricamento delle domande dal file CSV.";
+              console.error(error);
+          }
+});
+
+// Funzione per leggere il file CSV
+function parseCSV(text) {
+          const lines = text.split('\n');
+          questions = [];
+
+          // Salta l'intestazione (i = 1)
+          for (let i = 1; i < lines.length; i++) {
+              const line = lines[i].trim();
+              if (!line) continue;
+
+              // Gestisce la divisione considerando eventualivirgole/punti e virgola
+              const cols = line.split(';'); // Usa ';' se nel CSV hai usato il punto e virgola, altrimenti ','
+              if (cols.length >= 6) {
+                  questions.push({
+                      id: questions.length + 1,
+                      question: cols[0].trim().replace(/^"|"$/g, ''),
+                      options: [
+                          cols[1].trim().replace(/^"|"$/g, ''),
+                          cols[2].trim().replace(/^"|"$/g, ''),
+                          cols[3].trim().replace(/^"|"$/g, ''),
+                          cols[4].trim().replace(/^"|"$/g, '')
+                      ],
+                      solution: cols[5].trim().replace(/^"|"$/g, '')
+                  });
+              }
+          }
+
+          // Mescola le domande e ne prende massimo 30 casuali
+          questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
+}
+
+// Mostra la domanda corrente
+function loadQuestion(index) {
+          if (questions.length === 0) return;
+
+          if (index >= questions.length) {
+              showResults();
+              return;
+          }
+
+          const q = questions[index];
+          document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
+
+          // Mescola le opzioni di risposta per equità
+          const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+          for (let i = 0; i < 4; i++) {
+              const optBtn = document.getElementById(`opt${i}`);
+              if (optBtn) {
+                  const spanText = optBtn.querySelector('.option-text');
+                  if (spanText) {
+                      spanText.innerText = shuffledOptions[i];
+                  }
+                  // Rimuovi selezioni precedenti e imposta il click
+                  optBtn.classList.remove('btn-warning');
+                  optBtn.classList.add('btn-primary');
+
+                  if (userAnswers[q.id] === shuffledOptions[i]) {
+                      optBtn.classList.remove('btn-primary');
+                      optBtn.classList.add('btn-warning');
+                  }
+
+                  optBtn.onclick = (e) => {
+                      e.preventDefault();
+                      userAnswers[q.id] = shuffledOptions[i];
+                      // Evidenzia visivamente la scelta
+                      for (let j = 0; j < 4; j++) {
+                          document.getElementById(`opt${j}`).classList.remove('btn-warning');
+                          document.getElementById(`opt${j}`).classList.add('btn-primary');
+                      }
+                      optBtn.classList.remove('btn-primary');
+                      optBtn.classList.add('btn-warning');
+                  };
+              }
+          }
+}
+
+// Gestione pulsante Avanti
+document.addEventListener('click', function(e) {
+          if (e.target && e.target.innerText.includes('Avanti')) {
+              e.preventDefault();
+              currentIndex++;
+              loadQuestion(currentIndex);
+          }
+          if (e.target && e.target.innerText.includes('Indietro')) {
+              e.preventDefault();
+              if (currentIndex > 0) {
+                  currentIndex--;
+                  loadQuestion(currentIndex);
+              }
+          }
+});
+
+// Calcola e mostra i risultati alla fine
+function showResults() {
+          let correct = 0;
+          let mistakesHTML = "";
+
+          questions.forEach(q => {
+              const userAns = userAnswers[q.id];
+              if (userAns && userAns.toLowerCase() === q.solution.toLowerCase()) {
+                  correct++;
+              } else {
+                  mistakesHTML += `<p><b>Domanda:</b> ${q.question}<br><b>Tua risposta:</b> ${userAns || 'Nessuna'}<br><b>Risposta corretta:</b> ${q.solution}</p><hr>`;
+              }
+          });
+
+          const container = document.querySelector('.content-wrapper');
+          container.innerHTML = `
+              <h2 class="mbr-section-title mbr-fonts-style display-2">Test Completato!</h2>
+              <p class="mbr-text mbr-fonts-style display-7">Punteggio: <b>${correct} / ${questions.length}</b></p>
+              <h3 class="mbr-fonts-style display-5 mt-4">Riepilogo Errori:</h3>
+              <div style="text-align: left; max-height: 400px; overflow-y: auto;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
+          `;
+}
+  </script>
   
   
 </body>
