@@ -39,7 +39,7 @@
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-top: 40px;
-            height: auto !important; /* Si allunga in base al contenuto */
+            height: auto !important;
         }
 
         .option-btn {
@@ -49,14 +49,23 @@
             padding: 15px 20px !important;
             transition: all 0.2s ease-in-out;
         }
-        /* Box di riepilogo finale senza scrollbar, con allungamento naturale */
+
+        /* Box di riepilogo finale */
         .result-box {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            border: 2px solid #28a745; /* Contorno verde per le risposte corrette nel riepilogo */
+            border: 2px solid #ccc;
         }
+
+            .result-box.correct {
+                border-color: #28a745 !important; /* Contorno verde per risposte corrette */
+            }
+
+            .result-box.wrong {
+                border-color: #dc3545 !important; /* Contorno rosso per risposte errate o non date */
+            }
     </style>
 </head>
 <body>
@@ -89,7 +98,7 @@
                     <div class="quiz-container text-white">
                         <p id="materiaLabel" class="mbr-label mbr-fonts-style display-7 text-warning mb-1 text-center">Caricamento materia...</p>
 
-                        <!-- Riga e Numero della domanda in evidenza a sinistra -->
+                        <!-- Numero della domanda in evidenza a sinistra e riga del CSV a destra -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <span id="questionCounter" class="badge bg-warning text-dark px-3 py-2" style="font-size: 0.9rem;">Domanda 1 di 30</span>
                             <span id="rowLabel" class="text-muted" style="font-size: 0.85rem;"></span>
@@ -269,18 +278,24 @@ function showResults() {
 
             questions.forEach(q => {
                 const userAns = userAnswers[q.id];
-                const isCorrect = userAns && userAns.toLowerCase() === q.solution.toLowerCase();
+                // Confronto rigoroso pulendo eventuali spazi e formattazioni
+                const cleanUserAns = userAns ? userAns.trim().toLowerCase() : "";
+                const cleanSolution = q.solution.trim().toLowerCase();
+
+                const isCorrect = cleanUserAns !== "" && cleanUserAns === cleanSolution;
 
                 if (isCorrect) {
                     correct++;
                 }
 
-                // Mostra solo la domanda e la risposta corretta nel riepilogo
+                // Assegna la classe "correct" (verde) se esatta, altrimenti "wrong" (rosso)
+                const boxClass = isCorrect ? "result-box correct" : "result-box wrong";
+
                 resultsHTML += `
-                    <div class="result-box">
+                    <div class="${boxClass}">
                         <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 5px;">Riga ${q.csvRow} - Materia: ${q.materia}</p>
                         <p><b>Domanda:</b> ${q.question}</p>
-                        <p style="color: #28a745; margin-bottom: 0;"><b>Risposta corretta:</b> ${q.solution}</p>
+                        <p style="color: ${isCorrect ? '#28a745' : '#dc3545'}; margin-bottom: 0;"><b>Risposta corretta:</b> ${q.solution}</p>
                     </div>
                 `;
             });
@@ -289,7 +304,7 @@ function showResults() {
             container.innerHTML = `
                 <h2 class="mbr-section-title mbr-fonts-style display-2 text-center text-white">Test Completato!</h2>
                 <p class="mbr-text mbr-fonts-style display-7 text-center text-white mt-3">Punteggio finale: <b>${correct} / ${questions.length}</b></p>
-                <h3 class="mbr-fonts-style display-5 text-warning mt-4 text-center">Riepilogo Risposte Corrette:</h3>
+                <h3 class="mbr-fonts-style display-5 text-warning mt-4 text-center">Riepilogo Risposte:</h3>
                 <div class="text-start text-white mt-3" style="background: transparent;">${resultsHTML}</div>
                 <div class="text-center mt-4">
                     <a href="index.html" class="btn btn-warning display-7">Torna alla Home</a>
