@@ -23,7 +23,6 @@
     <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=KRYIAj" type="text/css">
 
     <style>
-        /* Stile personalizzato per mantenere la coerenza visiva e centrare il box del quiz */
         .quiz-container {
             background: rgba(18, 18, 18, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -43,7 +42,7 @@
 </head>
 <body>
 
-    <!-- Navbar coerente con la Home -->
+    <!-- Navbar con la scritta "Rossellini" trasformata in link per la Home -->
     <section data-bs-version="5.1" class="menu menu1 rebootm5 cid-vxPWGiSXVj" once="menu" id="menu-1-vxPWGiSXVj">
         <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
             <div class="card-wrap little-radius container-fluid">
@@ -53,16 +52,16 @@
                             <img src="assets/images/mbr-96x82.png" alt="Mobirise Website Builder" style="height: 3rem;">
                         </a>
                     </span>
-                    <span class="navbar-caption-wrap"><a class="navbar-caption display-4" href="index.html">Rossellini</a></span>
-                </div>
-                <div class="navbar-buttons mbr-section-btn">
-                    <a class="btn btn-warning display-7" href="index.html">Torna alla Home</a>
+                    <!-- Scritta Rossellini cliccabile che porta a index.html -->
+                    <span class="navbar-caption-wrap">
+                        <a class="navbar-caption display-4" href="index.html">Rossellini</a>
+                    </span>
                 </div>
             </div>
         </nav>
     </section>
 
-    <!-- Sezione principale con lo stesso sfondo fullscreen e overlay della home -->
+    <!-- Sezione principale del test -->
     <section data-bs-version="5.1" class="header02 rebootm5 cid-vxPWGiV9go mbr-fullscreen mbr-parallax-background" id="hero-2-vxPWGiV9go" style="padding-top: 100px;">
         <div class="mbr-overlay" style="opacity: 0.6; background-color: rgb(18, 18, 18);"></div>
 
@@ -70,13 +69,10 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
                     <div class="quiz-container text-white">
-                        <!-- Titolo Materia Dinamico -->
                         <p id="materiaLabel" class="mbr-label mbr-fonts-style display-7 text-warning mb-2 text-center">Caricamento materia...</p>
 
-                        <!-- Testo della Domanda -->
                         <h2 id="questionText" class="mbr-section-title mbr-fonts-style display-5 text-center mb-4" style="min-height: 80px;">Caricamento domanda in corso...</h2>
 
-                        <!-- Bottoni delle Risposte -->
                         <div class="d-grid gap-3 my-4">
                             <button id="opt0" class="btn btn-primary display-7 option-btn w-100">
                                 <span class="option-text">Risposta 1</span>
@@ -92,7 +88,6 @@
                             </button>
                         </div>
 
-                        <!-- Pulsanti di Navigazione (Indietro / Avanti) -->
                         <div class="d-flex justify-content-between mt-4">
                             <button id="prevBtn" class="btn btn-secondary display-7 px-4">Indietro</button>
                             <button id="nextBtn" class="btn btn-warning display-7 px-4">Avanti</button>
@@ -103,7 +98,7 @@
         </div>
     </section>
 
-    <!-- Script JavaScript integrato per il quiz e il filtro per materia -->
+    <!-- Script JavaScript per gestire il quiz, i filtri e il cambio in "Fine" sull'ultima domanda -->
     <script>
 let questions = [];
 let currentIndex = 0;
@@ -115,7 +110,6 @@ window.addEventListener('DOMContentLoaded', async () => {
                 if (!response.ok) throw new Error("File Esame.csv non trovato");
                 const data = await response.text();
 
-                // Legge la materia passata nell'URL (es. page1.html?materia=Orientamento%20finanziario)
                 const urlParams = new URLSearchParams(window.location.search);
                 const selectedMateria = urlParams.get('materia');
 
@@ -141,11 +135,10 @@ function parseCSV(text, filterMateria) {
                 const line = lines[i].trim();
                 if (!line) continue;
 
-                const cols = line.split(';'); // Usa il punto e virgola come separatore
+                const cols = line.split(';');
                 if (cols.length >= 7) {
                     const materiaCol = cols[6].trim().replace(/^"|"$/g, '');
 
-                    // Se è specificata una materia, filtra per quella (colonna G)
                     if (filterMateria && materiaCol.toLowerCase() !== decodeURIComponent(filterMateria).toLowerCase()) {
                         continue;
                     }
@@ -172,63 +165,62 @@ function parseCSV(text, filterMateria) {
                 return;
             }
 
-            // Mescola le domande e ne prende massimo 30
             questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
 }
 
 function loadQuestion(index) {
-    if (questions.length === 0) return;
+            if (questions.length === 0) return;
 
-    if (index >= questions.length) {
-        showResults();
-        return;
-    }
-
-    const q = questions[index];
-    document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
-
-    // Controlla se siamo arrivati all'ultima domanda
-    const nextBtn = document.getElementById('nextBtn');
-    if (index === questions.length - 1) {
-        nextBtn.innerText = "Fine";
-        nextBtn.classList.remove('btn-warning');
-        nextBtn.classList.add('btn-success'); // Diventa verde per indicare la conclusione (opzionale ma carino)
-    } else {
-        nextBtn.innerText = "Avanti";
-        nextBtn.classList.remove('btn-success');
-        nextBtn.classList.add('btn-warning');
-    }
-
-    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-    for (let i = 0; i < 4; i++) {
-        const optBtn = document.getElementById(`opt0`, `opt1`, `opt2`, `opt3`)[i] || document.getElementById(`opt${i}`);
-        if (optBtn) {
-            const spanText = optBtn.querySelector('.option-text');
-            if (spanText) {
-                spanText.innerText = shuffledOptions[i];
+            if (index >= questions.length) {
+                showResults();
+                return;
             }
 
-            optBtn.classList.remove('btn-warning');
-            optBtn.classList.add('btn-primary');
+            const q = questions[index];
+            document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
 
-            if (userAnswers[q.id] === shuffledOptions[i]) {
-                optBtn.classList.remove('btn-primary');
-                optBtn.classList.add('btn-warning');
+            // Gestione del bottone Avanti / Fine sull'ultima domanda
+            const nextBtn = document.getElementById('nextBtn');
+            if (index === questions.length - 1) {
+                nextBtn.innerText = "Fine";
+                nextBtn.classList.remove('btn-warning');
+                nextBtn.classList.add('btn-success');
+            } else {
+                nextBtn.innerText = "Avanti";
+                nextBtn.classList.remove('btn-success');
+                nextBtn.classList.add('btn-warning');
             }
 
-            optBtn.onclick = (e) => {
-                e.preventDefault();
-                userAnswers[q.id] = shuffledOptions[i];
-                for (let j = 0; j < 4; j++) {
-                    document.getElementById(`opt${j}`).classList.remove('btn-warning');
-                    document.getElementById(`opt${j}`).classList.add('btn-primary');
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < 4; i++) {
+                const optBtn = document.getElementById(`opt${i}`);
+                if (optBtn) {
+                    const spanText = optBtn.querySelector('.option-text');
+                    if (spanText) {
+                        spanText.innerText = shuffledOptions[i];
+                    }
+
+                    optBtn.classList.remove('btn-warning');
+                    optBtn.classList.add('btn-primary');
+
+                    if (userAnswers[q.id] === shuffledOptions[i]) {
+                        optBtn.classList.remove('btn-primary');
+                        optBtn.classList.add('btn-warning');
+                    }
+
+                    optBtn.onclick = (e) => {
+                        e.preventDefault();
+                        userAnswers[q.id] = shuffledOptions[i];
+                        for (let j = 0; j < 4; j++) {
+                            document.getElementById(`opt${j}`).classList.remove('btn-warning');
+                            document.getElementById(`opt${j}`).classList.add('btn-primary');
+                        }
+                        optBtn.classList.remove('btn-primary');
+                        optBtn.classList.add('btn-warning');
+                    };
                 }
-                optBtn.classList.remove('btn-primary');
-                optBtn.classList.add('btn-warning');
-            };
-        }
-    }
+            }
 }
 
 document.getElementById('nextBtn').addEventListener('click', (e) => {
