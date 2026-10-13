@@ -1,124 +1,203 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Simulazione Test - Pagina Quiz</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/theme/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="card-wrap little-radius container-fluid">
+            <div class="navbar-brand">
+                <span class="navbar-logo">
+                    <a href="index.html">
+                        <img src="assets/images/mbr-96x82.png" alt="Logo" style="height: 3rem;">
+                    </a>
+                </span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption display-4" href="index.html">Rossellini</a></span>
+            </div>
+        </div>
+    </nav>
+
+    <section data-bs-version="5.1" class="tabs01 tabs rebootm5 cid-vxQcBtGF2t" id="tabs01-1" style="padding-top: 120px;">
+        <div class="mbr-overlay" style="opacity: 0.8; background-color: rgb(18, 18, 18);"></div>
+
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="content-wrapper text-center">
+                        <p class="mbr-label mbr-fonts-style display-7">Materia</p>
+                        <h2 id="questionText" class="mbr-section-title mbr-fonts-style text-center display-2 text-white">Caricamento domanda...</h2>
+                    </div>
+                </div>
+
+                <div class="col-12 tabs-wrapper mt-4">
+                    <ul class="nav nav-tabs justify-content-center" role="tablist" style="list-style: none; display: flex; gap: 15px;">
+                        <li class="nav-item">
+                            <button id="opt0" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                                <span class="option-text">Risposta 1</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button id="opt1" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                                <span class="option-text">Risposta 2</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button id="opt2" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                                <span class="option-text">Risposta 3</span>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button id="opt3" class="btn btn-primary display-7 w-100" style="padding: 15px; min-width: 200px;">
+                                <span class="option-text">Risposta 4</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <div class="d-flex justify-content-between px-5">
+                        <button id="prevBtn" class="btn btn-md btn-secondary display-7">Indietro</button>
+                        <button id="nextBtn" class="btn btn-md btn-warning display-7">Avanti</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
 let questions = [];
 let currentIndex = 0;
 let userAnswers = {};
 
 window.addEventListener('DOMContentLoaded', async () => {
-        try {
-            const response = await fetch('Esame.csv');
-            const data = await response.text();
-            parseCSV(data);
-            loadQuestion(currentIndex);
-        } catch (error) {
-            document.getElementById('questionText').innerText = "Errore nel caricamento delle domande.";
-            console.error(error);
-        }
+            try {
+                const response = await fetch('Esame.csv');
+                if (!response.ok) throw new Error("Impossibile trovare il file Esame.csv");
+                const data = await response.text();
+                parseCSV(data);
+                loadQuestion(currentIndex);
+            } catch (error) {
+                document.getElementById('questionText').innerText = "Errore nel caricamento delle domande. Assicurati che Esame.csv sia nella cartella.";
+                console.error(error);
+            }
 });
 
 function parseCSV(text) {
-        const lines = text.split('\n');
-        questions = [];
+            const lines = text.split('\n');
+            questions = [];
 
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
 
-            const cols = line.split(';'); // Usa ';' o ',' in base al tuo file CSV
-            if (cols.length >= 6) {
-                questions.push({
-                    id: questions.length + 1,
-                    question: cols[0].trim().replace(/^"|"$/g, ''),
-                    options: [
-                        cols[1].trim().replace(/^"|"$/g, ''),
-                        cols[2].trim().replace(/^"|"$/g, ''),
-                        cols[3].trim().replace(/^"|"$/g, ''),
-                        cols[4].trim().replace(/^"|"$/g, '')
-                    ],
-                    solution: cols[5].trim().replace(/^"|"$/g, '')
-                });
+                const cols = line.split(';'); // Usa ';' se il CSV usa il punto e virgola
+                if (cols.length >= 6) {
+                    questions.push({
+                        id: questions.length + 1,
+                        question: cols[0].trim().replace(/^"|"$/g, ''),
+                        options: [
+                            cols[1].trim().replace(/^"|"$/g, ''),
+                            cols[2].trim().replace(/^"|"$/g, ''),
+                            cols[3].trim().replace(/^"|"$/g, ''),
+                            cols[4].trim().replace(/^"|"$/g, '')
+                        ],
+                        solution: cols[5].trim().replace(/^"|"$/g, '')
+                    });
+                }
             }
-        }
 
-        questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
+            questions = questions.sort(() => Math.random() - 0.5).slice(0, 30);
 }
 
 function loadQuestion(index) {
-        if (questions.length === 0) return;
+            if (questions.length === 0) return;
 
-        if (index >= questions.length) {
-            showResults();
-            return;
-        }
-
-        const q = questions[index];
-        document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
-
-        const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-        for (let i = 0; i < 4; i++) {
-            const optBtn = document.getElementById(`opt${i}`);
-            if (optBtn) {
-                const spanText = optBtn.querySelector('.option-text');
-                if (spanText) {
-                    spanText.innerText = shuffledOptions[i];
-                }
-
-                optBtn.classList.remove('btn-warning');
-                optBtn.classList.add('btn-primary');
-
-                if (userAnswers[q.id] === shuffledOptions[i]) {
-                    optBtn.classList.remove('btn-primary');
-                    optBtn.classList.add('btn-warning');
-                }
-
-                optBtn.onclick = (e) => {
-                    e.preventDefault();
-                    userAnswers[q.id] = shuffledOptions[i];
-                    for (let j = 0; j < 4; j++) {
-                        document.getElementById(`opt${j}`).classList.remove('btn-warning');
-                        document.getElementById(`opt${j}`).classList.add('btn-primary');
-                    }
-                    optBtn.classList.remove('btn-primary');
-                    optBtn.classList.add('btn-warning');
-                };
+            if (index >= questions.length) {
+                showResults();
+                return;
             }
-        }
+
+            const q = questions[index];
+            document.getElementById('questionText').innerText = `Domanda ${index + 1} di ${questions.length}: ${q.question}`;
+
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < 4; i++) {
+                const optBtn = document.getElementById(`opt${i}`);
+                if (optBtn) {
+                    const spanText = optBtn.querySelector('.option-text');
+                    if (spanText) {
+                        spanText.innerText = shuffledOptions[i];
+                    }
+
+                    optBtn.classList.remove('btn-warning');
+                    optBtn.classList.add('btn-primary');
+
+                    if (userAnswers[q.id] === shuffledOptions[i]) {
+                        optBtn.classList.remove('btn-primary');
+                        optBtn.classList.add('btn-warning');
+                    }
+
+                    optBtn.onclick = (e) => {
+                        e.preventDefault();
+                        userAnswers[q.id] = shuffledOptions[i];
+                        for (let j = 0; j < 4; j++) {
+                            document.getElementById(`opt${j}`).classList.remove('btn-warning');
+                            document.getElementById(`opt${j}`).classList.add('btn-primary');
+                        }
+                        optBtn.classList.remove('btn-primary');
+                        optBtn.classList.add('btn-warning');
+                    };
+                }
+            }
 }
 
-document.addEventListener('click', function(e) {
-        if (e.target && e.target.innerText.includes('Avanti')) {
+document.getElementById('nextBtn').addEventListener('click', (e) => {
             e.preventDefault();
             currentIndex++;
             loadQuestion(currentIndex);
-        }
-        if (e.target && e.target.innerText.includes('Indietro')) {
+});
+
+document.getElementById('prevBtn').addEventListener('click', (e) => {
             e.preventDefault();
             if (currentIndex > 0) {
                 currentIndex--;
                 loadQuestion(currentIndex);
             }
-        }
 });
 
 function showResults() {
-        let correct = 0;
-        let mistakesHTML = "";
+            let correct = 0;
+            let mistakesHTML = "";
 
-        questions.forEach(q => {
-            const userAns = userAnswers[q.id];
-            if (userAns && userAns.toLowerCase() === q.solution.toLowerCase()) {
-                correct++;
-            } else {
-                mistakesHTML += `<p><b>Domanda:</b> ${q.question}<br><b>Tua risposta:</b> ${userAns || 'Nessuna'}<br><b>Risposta corretta:</b> ${q.solution}</p><hr>`;
-            }
-        });
+            questions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (userAns && userAns.toLowerCase() === q.solution.toLowerCase()) {
+                    correct++;
+                } else {
+                    mistakesHTML += `<p><b>Domanda:</b> ${q.question}<br><b>Tua risposta:</b> ${userAns || 'Nessuna'}<br><b>Risposta corretta:</b> ${q.solution}</p><hr>`;
+                }
+            });
 
-        const container = document.querySelector('.content-wrapper') || document.body;
-        container.innerHTML = `
-            <h2 class="mbr-section-title mbr-fonts-style display-2">Test Completato!</h2>
-            <p class="mbr-text mbr-fonts-style display-7">Punteggio: <b>${correct} / ${questions.length}</b></p>
-            <h3 class="mbr-fonts-style display-5 mt-4">Riepilogo Errori:</h3>
-            <div style="text-align: left; max-height: 400px; overflow-y: auto; color: white;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
-        `;
+            const container = document.querySelector('.container-fluid');
+            container.innerHTML = `
+                <div class="text-center text-white py-5">
+                    <h2 class="display-2">Test Completato!</h2>
+                    <p class="display-7 mt-3">Punteggio: <b>${correct} / ${questions.length}</b></p>
+                    <h3 class="display-5 mt-5">Riepilogo Errori:</h3>
+                    <div class="text-start mx-auto mt-3" style="max-width: 600px; max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 8px;">${mistakesHTML || '<p>Complimenti, nessun errore!</p>'}</div>
+                </div>
+            `;
 }
-</script>
+    </script>
+
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/theme/js/script.js"></script>
+</body>
+</html>
